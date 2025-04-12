@@ -1,12 +1,14 @@
 # Migrating from nose to pytest
 
+For software (WIP) automating this please see [nose_pytest](https://github.com/eric-downes/nosey_pytest).
+
 ## Introduction
 
 This guide documents the process of migrating a Python project's test
 suite from the now-unmaintained nose framework to pytest. As of Python
 3.12, nose is no longer compatible due to its dependency on the
 removed `imp` module and other deprecated features. This guide
-captures lessons learned during the migration of test
+captures lessons learned during the migration of the PyContracts test
 suite, but the principles can be applied to any project.
 
 ## Why Migrate to pytest?
