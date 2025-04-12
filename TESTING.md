@@ -1,0 +1,92 @@
+# PyContracts Testing Guide
+
+This document explains how to run tests for the Python 3 compatible version of PyContracts.
+
+## Test Setup
+
+The testing infrastructure has been updated to use modern pytest and includes a comprehensive test suite for both Python 2 and Python 3 compatibility.
+
+### Test Files
+
+The test suite includes:
+
+1. **Original Tests**: Located in `src/contracts/testing/` directory.
+   - These are the original tests from the PyContracts library.
+   - Some use the older "yield tests" format which is not compatible with newer pytest versions.
+
+2. **Python 3 Compatibility Tests**: Located in the `tests/` directory.
+   - `test_collections_abc.py`: Tests compatibility with collections.abc module.
+   - `test_string_compatibility.py`: Tests string/bytes handling.
+   - `test_exception_handling.py`: Tests exception handling compatibility.
+   - `test_python312_compatibility.py`: Tests specifically for Python 3.12+ compatibility.
+   - `test_pycontracts_py3.py`: A comprehensive test for all Python 3 compatibility features.
+
+### Running Tests
+
+You can run the tests using the provided `run_tests.py` script:
+
+```bash
+python run_tests.py
+```
+
+Or run specific tests using pytest directly:
+
+```bash
+# Run the Python 3.12+ compatibility tests
+python -m pytest tests/test_python312_compatibility.py -v
+
+# Run all Python 3 compatibility tests
+python -m pytest tests/ -v
+
+# Run specific original tests (some may fail due to old format)
+python -m pytest src/contracts/testing/test_multiple.py -v
+```
+
+## CI/CD Integration
+
+A GitHub Actions workflow is configured in `.github/workflows/python-test.yml` that:
+
+1. Runs tests on multiple Python versions (2.7, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12)
+2. Runs tests on multiple operating systems (Ubuntu, Windows, macOS)
+3. Uploads coverage reports to Codecov
+
+## Testing with Tox
+
+You can also run tests across multiple Python versions locally using tox:
+
+```bash
+# Install tox if you don't have it
+pip install tox
+
+# Run tests on all available Python versions
+tox
+
+# Run tests on a specific Python version
+tox -e py312
+```
+
+## Test Dependencies
+
+The test suite requires the following dependencies:
+
+- pytest
+- pytest-cov
+- numpy (for array tests)
+- six
+- future
+- decorator
+- pyparsing>=3.0.0 (for Python 3 compatibility)
+
+These are listed in `requirements-dev.txt` and can be installed with:
+
+```bash
+pip install -r requirements-dev.txt
+```
+
+## Known Test Issues
+
+1. **Yield Tests**: Some of the original tests use the old "yield tests" format which is deprecated in pytest 4.0+. These tests will be skipped with warnings.
+
+2. **NumPy Deprecation Warnings**: Tests using deprecated NumPy functions like `np.float` may show warnings. These have been fixed in the tests that we frequently run.
+
+3. **Python 2.7 Tests**: When running in Python 3.12+, some tests specific to Python 2.7 features might be skipped.
