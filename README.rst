@@ -112,7 +112,7 @@ like ABCMeta, which propagates contracts to the subclasses: ::
 
 We have migrated our test suite from nose to pytest. If you're interested in how we did that, check out the ``nose_to_pytest_guide.md`` file, which documents the migration process and tools we created to help with it.
 
-**Status on Python 3.x:** We have full Python 3 support, including Python 3.12.
+**Status on Python 3.x:** We have full Python 3 support, including Python 3.12 and above. The library has been updated to handle the collections ABC changes introduced in Python 3.12 (where collection classes were moved from collections to collections.abc).
 
 **Contributors**:
 

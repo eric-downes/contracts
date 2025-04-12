@@ -761,6 +761,18 @@ Migrating from nose to pytest is a methodical process that can be done increment
 
 19. **Documentation Updates**: Remember to update documentation, README files, and CI/CD configuration to reflect the migration to pytest.
 
+20. **Test Coverage Measurement**: Use `--cov` flag with pytest to measure and improve test coverage during migration.
+
+21. **Artifacts Cleanup**: After completing migration, clean up any leftover artifacts like `.bak` files, JSON tracking files, or temporary scripts.
+
+22. **Python 3.12+ Compatibility**: Pay special attention to code that depends on modules that changed in Python 3.12+, like `collections` vs `collections.abc`.
+
+23. **Module-Specific Test Files**: Create targeted test files for utility modules and compatibility layers to improve test coverage and ensure stability.
+
+24. **Test Isolation**: Ensure each test properly cleans up after itself, especially when testing features that modify global state.
+
+25. **Environment Variable Testing**: For features that depend on environment variables (like disabling functionality), use pytest fixtures to set and restore environment variables reliably.
+
 By following this approach, we successfully migrated a complex test suite with multiple interdependencies, ensuring compatibility with Python 3.12 while improving maintainability for the future.
 
 ### Additional Recommendations for Large Projects

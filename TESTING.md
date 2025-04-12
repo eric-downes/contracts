@@ -21,16 +21,20 @@ The test suite includes:
    - `test_exception_handling.py`: Tests exception handling compatibility.
    - `test_python312_compatibility.py`: Tests specifically for Python 3.12+ compatibility.
    - `test_pycontracts_py3.py`: A comprehensive test for all Python 3 compatibility features.
+   - `test_py_compatibility.py`: Tests for the Python 2/3 compatibility layer.
+   - `test_utils.py`: Tests for utility functions with Python 3 compatibility.
+   - `test_enabling.py`: Tests for contract enabling/disabling functionality.
+   - `test_inspection.py`: Tests for inspection utilities.
 
 ### Running Tests
 
-You can run the tests using the provided `run_tests.py` script:
+You can run all tests using pytest directly:
 
 ```bash
-python run_tests.py
+python -m pytest
 ```
 
-Or run specific tests using pytest directly:
+Or run specific test subsets:
 
 ```bash
 # Run the Python 3.12+ compatibility tests
@@ -39,8 +43,18 @@ python -m pytest tests/test_python312_compatibility.py -v
 # Run all Python 3 compatibility tests
 python -m pytest tests/ -v
 
-# Run specific original tests (some may fail due to old format)
+# Run specific original tests
 python -m pytest src/contracts/testing/test_multiple.py -v
+```
+
+To run tests with coverage reporting:
+
+```bash
+# Run all tests with coverage
+python -m pytest --cov=src.contracts
+
+# Run specific tests with coverage for a specific module
+python -m pytest tests/test_py_compatibility.py --cov=src.contracts.py_compatibility
 ```
 
 ## CI/CD Integration
