@@ -16,8 +16,7 @@ classes from the `collections` module and moved them to
 
 The easiest option is to use our patched version of PyContracts:
 
-1. Copy the `vendor/py_contracts` directory to your project
-2. Include this directory in your Python path
+1. Clone this repository to a directory in your Python path
 3. Make sure to add `past` to your requirements if you need Python 2 compatibility
 
 ## Option 2: Create a Compatibility Layer
