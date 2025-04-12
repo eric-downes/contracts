@@ -745,6 +745,20 @@ Migrating from nose to pytest is a methodical process that can be done increment
 
 12. **Tests As Compatibility Canaries**: Tests often reveal Python 3 compatibility issues in your main codebase. Document these issues for broader codebase migrations.
 
+13. **Parameterizing Yield Tests**: When converting yield tests to pytest's parameterized tests, using helper functions to generate test parameters can make complex test cases more maintainable.
+
+14. **Coverage Impact**: Converting yield tests to parameterized tests can significantly improve your test coverage metrics as each test case is now properly counted.
+
+15. **xfail vs skip**: Use `@pytest.mark.xfail` for tests that are expected to fail due to known issues rather than skipping them, as this provides better visibility into the status of these tests.
+
+16. **Tracking Migration Progress**: Using a tracking system with a dedicated JSON file for recording migration progress helps manage large migrations incrementally.
+
+17. **Automated Migration Tools**: For large codebases, creating automated tools that apply common transformation patterns can significantly speed up the migration process.
+
+18. **Dependency Management**: Ensure you remove nose from requirements files and add pytest-specific dependencies (like pytest-cov for coverage reports).
+
+19. **Documentation Updates**: Remember to update documentation, README files, and CI/CD configuration to reflect the migration to pytest.
+
 By following this approach, we successfully migrated a complex test suite with multiple interdependencies, ensuring compatibility with Python 3.12 while improving maintainability for the future.
 
 ### Additional Recommendations for Large Projects
@@ -763,6 +777,98 @@ By following this approach, we successfully migrated a complex test suite with m
    - Update CI/CD pipelines to use pytest's XML output for better reporting
    - Configure test result visualization in your CI environment
    - Set up automated test failure notifications
+
+### Managing Test Coverage During Migration
+
+When migrating from nose to pytest, you may notice significant changes in your coverage metrics. This is especially true when converting yield tests to parameterized tests. Here are some tips for managing test coverage during migration:
+
+1. **Establish a Baseline**: Before starting the migration, run coverage on your existing nose tests to establish a baseline.
+
+2. **Track Coverage Changes**: As you migrate tests, compare coverage reports to ensure you're not losing coverage.
+
+3. **Understand Coverage Reporting Differences**: 
+   - pytest-cov and nose-cov may calculate coverage differently
+   - Parameterized tests often improve coverage metrics as each parameter combination is counted separately
+   - Xfailed tests may be treated differently in coverage calculations
+
+4. **Address Coverage Gaps**: If the migration reveals coverage gaps, this is an opportunity to add tests for previously uncovered code.
+
+### Migration Tooling
+
+Creating specialized tools can significantly streamline the migration process, especially for large codebases:
+
+1. **Progress Tracking Tool**: 
+   ```python
+   # Simple tool to track migration progress
+   class MigrationTracker:
+       def __init__(self, tracking_file):
+           self.tracking_file = tracking_file
+           self.data = self._load_data()
+           
+       def _load_data(self):
+           # Load migration status from JSON file
+           # Return default data if file doesn't exist
+           
+       def mark_migrated(self, file_path):
+           # Update status for a migrated file
+           
+       def get_status(self):
+           # Return current migration status
+   ```
+
+2. **Automated Transformation Tool**:
+   ```python
+   # Tool to automatically apply common transformations
+   def apply_transformations(file_path, transformations):
+       with open(file_path, 'r') as f:
+           content = f.read()
+           
+       for pattern, replacement in transformations:
+           content = re.sub(pattern, replacement, content)
+           
+       with open(file_path, 'w') as f:
+           f.write(content)
+   ```
+
+3. **Test Runner Script**:
+   ```python
+   #!/usr/bin/env python
+   # Script to run tests during migration
+   import pytest
+   import sys
+   
+   if __name__ == "__main__":
+       test_path = sys.argv[1] if len(sys.argv) > 1 else "tests/"
+       sys.exit(pytest.main(["-xvs", test_path]))
+   ```
+
+These tools can be customized to fit your project's specific needs and can make a large migration more manageable.
+
+### Handling False Positives in Migration Tracking
+
+When tracking migration progress, you may encounter situations where your tracking system shows tests still using nose, but your automated scanning tools don't find any nose dependencies. This can happen because:
+
+1. **Files were already migrated**: Some files may have been previously migrated from nose without updating the tracking information.
+
+2. **Indirect dependencies**: Tests may not directly import nose but depend on other modules that use nose.
+
+3. **Legacy unittest code**: Tests may be using unittest (which is compatible with pytest) rather than nose, but are counted as "not migrated" in your tracking.
+
+To resolve these discrepancies:
+
+1. **Verify with grep**: Use grep to search for direct nose imports:
+   ```bash
+   grep -r "import nose\|from nose" --include="*.py" .
+   ```
+
+2. **Check with pytest**: Run the tests with pytest after uninstalling nose to see if they still work:
+   ```bash
+   pip uninstall -y nose && python -m pytest path/to/test_file.py
+   ```
+
+3. **Update tracking manually**: If tests are working without nose but are still tracked as "not migrated," update your tracking data manually.
+
+4. **Document assumptions**: Make note of any decisions made about files that were auto-marked as migrated to help future maintainers understand your reasoning.
 
 ---
 
