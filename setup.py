@@ -52,7 +52,7 @@ setup(name='PyContracts',
       package_dir={'': 'src'},
       packages=find_packages('src'),
       install_requires=['pyparsing>=3.0.0', 'decorator', 'six', 'future'],
-      tests_require=['pytest', 'pytest-cov', 'numpy'],
+      tests_require=['pytest>=7.0.0', 'pytest-cov>=6.0.0', 'numpy'],
       python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
       classifiers=[
           'Development Status :: 5 - Production/Stable',

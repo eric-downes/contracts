@@ -4,7 +4,7 @@ This document explains how to run tests for the Python 3 compatible version of P
 
 ## Test Setup
 
-The testing infrastructure has been updated to use modern pytest and includes a comprehensive test suite for both Python 2 and Python 3 compatibility.
+The testing infrastructure has been updated to use modern pytest and includes a comprehensive test suite for both Python 2 and Python 3 compatibility. We have fully migrated from nose to pytest, with details of the migration process documented in `nose_to_pytest_guide.md`.
 
 ### Test Files
 
@@ -70,8 +70,8 @@ tox -e py312
 
 The test suite requires the following dependencies:
 
-- pytest
-- pytest-cov
+- pytest>=7.0.0
+- pytest-cov>=6.0.0
 - numpy (for array tests)
 - six
 - future
@@ -83,6 +83,17 @@ These are listed in `requirements-dev.txt` and can be installed with:
 ```bash
 pip install -r requirements-dev.txt
 ```
+
+## Migration Tools
+
+We've created a set of tools to help with the migration from nose to pytest. These tools may be useful for other projects migrating from nose to pytest:
+
+- `pytest_migration.py`: Command-line tool for tracking and automating migrations
+- `pytest_migration_lib/`: Library with utilities for migration tasks
+  - `tracking.py`: Tools for tracking migration progress
+  - `automigrate.py`: Tools for automatically converting nose tests
+
+For more information on using these tools, see the `nose_to_pytest_guide.md` file.
 
 ## Known Test Issues
 
