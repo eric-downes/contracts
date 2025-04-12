@@ -10,9 +10,10 @@ The testing infrastructure has been updated to use modern pytest and includes a 
 
 The test suite includes:
 
-1. **Original Tests**: Located in `src/contracts/testing/` directory.
+1. **Core Tests**: Located in `src/contracts/testing/` directory.
    - These are the original tests from the PyContracts library.
-   - Some use the older "yield tests" format which is not compatible with newer pytest versions.
+   - All tests have been migrated from nose to pytest.
+   - Previously using yield-style tests have been converted to parameterized tests.
 
 2. **Python 3 Compatibility Tests**: Located in the `tests/` directory.
    - `test_collections_abc.py`: Tests compatibility with collections.abc module.
@@ -85,7 +86,9 @@ pip install -r requirements-dev.txt
 
 ## Known Test Issues
 
-1. **Yield Tests**: Some of the original tests use the old "yield tests" format which is deprecated in pytest 4.0+. These tests will be skipped with warnings.
+1. **Expected Failures**: A small number of tests are marked with `@pytest.mark.xfail` or `@unittest.expectedFailure` because they test functionality that is known to have issues:
+   - Tests for contracts with static methods and class methods 
+   - String comparison tests in Python 3.12+
 
 2. **NumPy Deprecation Warnings**: Tests using deprecated NumPy functions like `np.float` may show warnings. These have been fixed in the tests that we frequently run.
 

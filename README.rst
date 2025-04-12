@@ -102,9 +102,15 @@ like ABCMeta, which propagates contracts to the subclasses: ::
     def recolor(image):
         ...
 
-**Status:** The syntax is stable and it won't be changed. PyContracts is very well tested on Python 2.x. 
+**Status:** The syntax is stable and it won't be changed. PyContracts is very well tested on Python 2.x and Python 3.x.
 
-**Status on Python 3.x:** We reached feature parity! Everything works on Python 3 now.
+**Testing:** PyContracts uses pytest for testing. You can run the tests using:
+
+.. code-block:: bash
+
+    python -m pytest
+
+**Status on Python 3.x:** We have full Python 3 support, including Python 3.12.
 
 **Contributors**:
 
